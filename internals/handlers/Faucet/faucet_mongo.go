@@ -109,7 +109,6 @@ func SendToken(c *fiber.Ctx) error {
 	// var f model.Faucet
 	defer cancel()
 
-
 	fmt.Println(c.Params("chain"))
 	fmt.Println(c.Params("address"))
 
@@ -117,7 +116,6 @@ func SendToken(c *fiber.Ctx) error {
 	// if validationErr := validate.Struct(&f); validationErr != nil {
 	// 	return c.Status(http.StatusBadRequest).JSON(FaucetResponse{Status: http.StatusBadRequest, Message: "error", Data: &fiber.Map{"data": validationErr.Error()}})
 	// }
-
 
 	cursor, err := faucetCollection.Find(ctx, bson.D{{"chain", c.Params("chain")}, {"public_address", c.Params("address")}})
 
@@ -149,12 +147,12 @@ func SendToken(c *fiber.Ctx) error {
 
 	fmt.Println(difference)
 
-	if int64(difference) < 24 {
-		return c.JSON(fiber.Map{"status": "failed", "message": "Last transaction happened less than 24hrs ago.", "data": nil})
-	} else {
-		tokenTransfer(c.Params("chain"), c.Params("address"))
-	}
-
+	// if int64(difference) < 24 {
+	// 	return c.JSON(fiber.Map{"status": "failed", "message": "Last transaction happened less than 24hrs ago.", "data": nil})
+	// } else {
+	// 	tokenTransfer(c.Params("chain"), c.Params("address"))
+	// }
+	tokenTransfer(c.Params("chain"), c.Params("address"))
 	return c.JSON(fiber.Map{"status": "success", "message": "Faucet data Found from mongoDB", "data": blockData})
 
 	return nil
